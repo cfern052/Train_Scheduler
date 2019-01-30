@@ -66,6 +66,25 @@ dataRef.ref().on("child_added", function (childSnapshot) {
     var tFreq = sv.frequency;
     var tStart = sv.startTime;
 
+    var firstTimeCon =moment(tStart, "HH:mm").subtract(1, "years");
+    console.log(firstTimeCon);
+
+    var currentTime= moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+
+    var diffTime = moment().diff(moment(firstTimeCon), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
+
+    var tRemainder = diffTime % tFreq;
+    console.log(tRemainder);
+
+    // Minute Until Train
+    var tMinutesTill = tFreq - tRemainder;
+    console.log("MINUTES TILL TRAIN: " + tMinutesTill);
+
+    var nextTrain = moment().add(tMinutesTill, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+
     console.log(sv.name);
     console.log(sv.destination);
     console.log(sv.frequency);
@@ -76,14 +95,18 @@ dataRef.ref().on("child_added", function (childSnapshot) {
         $("<td>").text(tDest),
         $("<td>").text(tFreq),
         $("<td>").text(tStart),
+        $("<td>").text(currentTime),
+        $("<td>").text(diffTime),
+        $("<td>").text(tMinutesTill),
+        $("<td>").text(nextTrain),
+        $("<td>").text(),
+        $("<td>").text(),
     );
 
     $("#trainTable").append(newRow);
-
+    
 });
 
+
+
 });
-
-
-
-
