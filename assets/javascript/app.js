@@ -20,75 +20,70 @@ $(document).ready(function () {
     var frequency = 0;
     var time = '';
 
-    $("#addTrain").on("click", function (event) {
-        event.preventDefault();
-
-        var trainName = $("#trainInput").val().trim();
-        var destination = $("#destinationInput").val().trim();
-        var frequency = $("#frequencyInput").val();
-        var time = $("#timeInput").val().trim();
-
-        var newTrain = {
-            name: trainName,
-            destination: destination,
-            frequency: frequency,
-            startTime: time,
-            dateAdded: firebase.database.ServerValue.TIMESTAMP
-        };
-        dataRef.ref().push(newTrain);
-
-        console.log(newTrain.name);
-        console.log(newTrain.destination);
-        console.log(newTrain.frequency);
-        console.log(newTrain.startTime);
-        // alert("All aboard! Your train has been added to the schedule");
-    });
 
 
+$("#addTrain").on("click", function (event) {
+    event.preventDefault();
+    //get input
+    var trainName = $("#trainInput").val().trim();
+    var destination = $("#destinationInput").val().trim();
+    var frequency = $("#frequencyInput").val();
+    var time = $("#timeInput").val().trim();
+    //creates temp object for holding data
+    var newTrain = {
+        name: trainName,
+        destination: destination,
+        frequency: frequency,
+        startTime: time,
+        dateAdded: firebase.database.ServerValue.TIMESTAMP
+    };
+    //uploads it to the database        
+    dataRef.ref().push(newTrain);
 
+    console.log(newTrain.name);
+    console.log(newTrain.destination);
+    console.log(newTrain.frequency);
+    console.log(newTrain.startTime);
+    // alert("All aboard! Your train has been added to the schedule");
 
     $("#trainInput").val("");
     $("#destinationInput").val("");
-    $("frequencyInput").val("");
+    $("#frequencyInput").val("");
     $("#timeInput").val("");
 
-
-    dataRef.ref().on("child_added", function (childSnapshot) {
-
-        var sv = childSnapshot.val();
-        console.log(sv.name);
-        console.log(sv.destination);
-        console.log(sv.frequency);
-        console.log(sv.startTime);
-
-        $("#trainTable").append("<tr class='well row'><td class='trainName col-2'> " +
-            sv.name +
-            " </td><td class='trainDestination col-2'> " + sv.destination +
-            " </td><td class='trainFrequency col-2'> " + sv.frequency +
-            " </td><td class='trainStart col-2'> " + sv.startTime +
-            " </td></tr></tbody>");
-        // My Stuff
-        // $("<tr class='well row'><td class='trainName col-2'> " +
-        //     sv.name +
-        //     " </td><td class='trainDestination col-2'> " + sv.destination +
-        //     " </td><td class='trainFrequency col-2'> " + sv.frequency +
-        //     " </td><td class='trainStart col-2'> " + sv.startTime +
-        //     " </td></tr></tbody>").appendTo("#trainTable tbody");
-        // End My Stuff
-
-            dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
-                // Change the HTML to reflect
-                $("#name-display").text(sv.name);
-                $("#destination-display").text(sv.destination);
-                $("#frequency-display").text(sv.frequency);
-                $("#start-display").text(sv.startTime);
-              });
-
-    }, function (errorObject) {
-        console.log("Errors handled: " + errorObject.code);
-    });
+});
 
 
-  
+
+
+
+//Firebase event for adding train and a row in the html 
+dataRef.ref().on("child_added", function (childSnapshot) {
+    //stores data
+    var sv = childSnapshot.val();
+    var tName = sv.name;
+    var tDest = sv.destination;
+    var tFreq = sv.frequency;
+    var tStart = sv.startTime;
+
+    console.log(sv.name);
+    console.log(sv.destination);
+    console.log(sv.frequency);
+    console.log(sv.startTime);
+    //make new row
+    var newRow = $('<tr>').append(
+        $("<td>").text(tName),
+        $("<td>").text(tDest),
+        $("<td>").text(tFreq),
+        $("<td>").text(tStart),
+    );
+
+    $("#trainTable").append(newRow);
 
 });
+
+});
+
+
+
+
