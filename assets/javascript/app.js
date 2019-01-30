@@ -94,13 +94,10 @@ dataRef.ref().on("child_added", function (childSnapshot) {
         $("<td>").text(tName),
         $("<td>").text(tDest),
         $("<td>").text(tFreq),
-        $("<td>").text(tStart),
-        $("<td>").text(currentTime),
-        $("<td>").text(diffTime),
+        $("<td>").text((nextTrain).format("hh:mm")),
         $("<td>").text(tMinutesTill),
-        $("<td>").text(nextTrain),
-        $("<td>").text(),
-        $("<td>").text(),
+        $("<td>").text(tStart)
+        
     );
 
     $("#trainTable").append(newRow);
